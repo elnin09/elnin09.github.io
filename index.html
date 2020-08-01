@@ -1,16 +1,28 @@
 <html>
 <script src='https://d3js.org/d3.v5.min.js'></script>
-<style> circle {fill: lightblue; stroke: black;} </style>
+<style> 
+circle {fill: lightblue; stroke: black;}
+h1 {text-align: center;} 
+</style>
 
 <body onload='init()'>
-<svg width=300 height=300>
+<h1>EPL Champions Comparison</h1>
+<div style="width: 100%; margin-left: auto;margin-top: auto;">
+    <div style="width: 35%;float: left;margin: auto;"> 
+       <div id="leftcontent">
+
+       </div>
+    </div>
+    <div style="margin-left: 40%;margin: auto;"> 
+        
+    </div>
 </svg>
 <script>
     var data;
     async function init() 
     {
-        data = await d3.csv("epl.csv");
-
+        data = await d3.csv("https://elnin09.github.io/epl.csv");
+        action1(); 
     }
 
     function transition(buttonid)
@@ -31,8 +43,39 @@
         {
 
         }
+        if(buttonid ==5)
+        {
+
+        }
     } 
 
+    function action1()
+    {
+
+
+
+    }
+
+    function action2()
+    {
+
+    }
+
+    function action3()
+    {
+
+    }
+
+    function action4()
+    {
+
+    }
+    function action5()
+    {
+
+    }
+
 </script>
-    </body>
-    </html>
+
+</body>
+</html>
