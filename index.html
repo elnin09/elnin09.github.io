@@ -2,84 +2,249 @@
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <style> 
 circle {fill: lightblue; stroke: black;}
-h1 {text-align: center;} 
+h1 {text-align: center;font-family: fantasy;font-size: 38; background-color: blanchedalmond;} 
+h2 {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 24; background-color: skyblue; opacity:0.7;}
+body{background-size: cover; opacity: 1; background-repeat: repeat;}
+button{background-color: blanchedalmond; shape-rendering: auto; width:18%;margin: 0%;height:40px;}
+button:hover {
+  background-color:black; /* Green */
+  color:yellowgreen
+}
+#container {
+  display: flex;                  /* establish flex container */
+  flex-direction: row;            /* default value; can be omitted */
+  flex-wrap: nowrap;              /* default value; can be omitted */
+  justify-content: space-between; /* switched from default (flex-start, see below) */
+  padding-top: 1%;
+}
+
+#leftcontainer {
+  width: 40%;
+  padding-left: 0px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color:black;
+}
+
+#rightcontent
+{
+ width : 55%;
+}
+
+p{
+transition: width 2s, height 4s;
+font-size: 24;
+}
+div {
+  opacity: 0.9;
+}
+
 </style>
-
-<body onload='init()'>
-<h1>EPL Champions Comparison</h1>
-<div style="width: 100%; margin-left: auto;margin-top: 100px;">
-    <div style="width: 35%;float: left;margin-left: 30px;"> 
-       <div id="leftcontent";margin = auto>
-       <button onclick="transition(1)">Points</button>
-       <button onclick="transition(2)">Wins</button>
-       <button onclick="transition(3)">GF</button>
-       <button onclick="transition(4)">GA</button>
-       <button onclick="transition(5)">GD</button>
-       </div>
+<body onload='init()'; background="logo1.jpeg"; >
+<h1> EPL Champions Comparison</h1>
+<h2>The Premier League, often referred to as the English Premier League or the EPL outside England, is the top level of the English football league system.
+    The Premier League is the most-watched sports league in the world, broadcast in 212 territories to 643 million homes and a potential TV audience of 4.7 billion people.This season the title was won
+    by Liverpool with a record 7 games remaining.Let's compare the current Liverpool side with the previous winners of the league.
+</h2>
+<div id="leftcontent" style= "width :80%; align-content: center;">
+<button onclick="transition(1)">Points</button>
+<button onclick="transition(2)">Wins</button>
+<button onclick="transition(3)">Goals Scored</button>
+<button onclick="transition(4)">Goals Conceeded</button>
+<button onclick="transition(5)">Goal Difference</button>
+</div>
+<div id = "container">
+    <div id = "leftcontainer"> 
+        <p id="info">
+           Click on the above buttons to compare Premier League Champions.
+           </p>
     </div>
-    <div style="margin-left: 40%;margin: auto;"> 
-        <div id="rightcontent">
-
-        </div>
+    <div id="rightcontent">
     </div>
-</svg>
+ 
+</div>
+     EPL 16 seasons data 
+</div>
+</div>
+</div>
+
 <script>
+    var str;
     var data;
+    var text=["Manchester City became the first Premier League side to amass 100 points when they won the 2017-18 title.Pep Guardiola's side were dubbed \"Centurions\" and deemed the greatest side to ever win the Premier League when they finished the season on 100 points, losing twice and drawing four games. The record was previously held by Chelsea.",
+    "The record of most PL wins in a season 32 was achieved by Manchester City in 2017-2018 and 2018-2019 seasons.This record was matched by Liverpool in 2019-2020 season.",
+    "Pep Guardiola's second season at the Etihad saw his footballing ideology fully embedded with his plethora of superstar players when City scored 106 goals surpassing Chelsea's tally of 103 goals in 2009/2010 season.",
+    "Former Manchester United manager Alex Ferguson once said: \"Attack wins you matches, defence wins you the titles\". Chelsea, who won the 2004-05 Premier League with just 1 defeat in the league,conceded only 15 goals in the Premier League",
+    "The narrowest winning margin came in 2011/12 when Sergio Aguero's goal, deep into stoppage-time on the final day of the season, gave Man City the title in the most dramatic of Premier League finishes due to superior goal difference after being level on points."
+    ];
     async function init() 
     {
         data = await d3.csv("https://elnin09.github.io/epl.csv");
-        action1(); 
+        //drawchart(1);
+    }
+
+    async function drawchart(invariable)
+    {
+        //data = await d3.csv("https://elnin09.github.io/epl.csv");
+        var season = data.map(function(i) {return parseInt(i.Season);} );
+        var club = data.map(function(i) {return i.Club;} );
+        var points = data.map(function(i) {return parseInt(i.Points);} );
+        var won = data.map(function(i) {return parseInt(i.Won);} );
+        var gf = data.map(function(i) {return parseInt(i.GF);} );
+        var ga = data.map(function(i) {return parseInt(i.GA);} );
+        var gd = data.map(function(i) {return parseInt(i.GD);} );
+        console.log(season);
+        console.log(club);
+        console.log(points);
+        console.log(won);
+        console.log(gf);
+        console.log(ga);
+        console.log(gd);
+         
+        rectcolor =
+        {
+            "Chelsea":"Blue",
+            "Manchester United" :"Red" ,
+            "Manchster United"  :"Red",
+            "Manchester City"  : "#add8e6" ,
+            "Liverpool" : "Black",
+            "Leicster City" : "#293542"
+        }
+        
+        var y;
+        var tickvalues; 
+        switch(invariable) {
+           case 1:
+            curdata=points;
+            y = d3.scaleLinear().domain([0,120]).range([550,0]);
+            tickvalues =[30,60,90,120];
+            break;
+            case 2:
+            curdata=won;
+            y = d3.scaleLinear().domain([0,40]).range([550,0]);
+            tickvalues =[10,20,30,40];
+            break;
+            case 3:
+            curdata=gf;
+            y = d3.scaleLinear().domain([0,120]).range([550,0]);
+            tickvalues =[30,60,90,120];
+            break;
+            case 4:
+            curdata=ga;
+            y = d3.scaleLinear().domain([0,50]).range([550,0]);
+            tickvalues =[10,20,30,40,50];
+            break;
+            case 5:
+            curdata=gd;
+            y = d3.scaleLinear().domain([0,80]).range([550,0]);
+            tickvalues =[20,40,60,80];
+            break;
+            default:
+
+            }
+        d3.select("#rightcontent").html(null); 
+        var x = d3.scaleLinear().domain([2004,2020]).range([0,750]);
+        var svgelement = d3.select("#rightcontent").append("svg").attr("width","800").attr("height","600");
+        console.log(x(2019));
+        console.log(y(100));
+
+        var bars = svgelement.selectAll("rect")
+        .append("g")
+        .attr("transform","translate(50,50)")
+        .data(curdata)
+        .enter()
+        .append("rect")
+        .attr("x",function(d,i) {return x(season[i]);})
+        .attr("y",function(d,i) {return y(d);})
+        .attr("width",function(d,i){return 750/16;})
+        .transition()
+        .attr("height", function(d,i) {return 550-y(d);})
+        .attr("fill",function(d,i){return rectcolor[club[i]];})
+        .attr("style","stroke: white")
+        .duration(5000);
+
+        var yaxisnodes = svgelement.
+        append("g")
+        .attr("transform","translate(0,0)")
+        .call(d3.axisLeft(y));
+
+        //yAxisNodes.selectAll('text').style({ 'stroke-width': '1px'});
+
+        var xaxisnodes = svgelement.
+        append("g")
+        .attr("transform","translate(0,550)")
+        .call(d3.axisBottom(x).tickValues([2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020]).tickFormat(d3.format("d")))
+        .attr("stroke","white")
+        .selectAll("text")
+        .attr("y", 10)
+        .attr("x", -50)
+        .attr("dy", "-1.75em")
+        .attr("transform", "rotate(-90)")
+        .style("text-anchor", "start")
+        .style("font-size","18")
+        .style("fill","yellow")
+        ;
+        
+        ;
+
+        //xAxisNodes.selectAll('text').style({ 'stroke-width': '1px'});
+
+        
+        /*
+        svgselect("svg")
+        .attr("width",300)
+        .attr("height",300).append("g")
+        .attr("transform","translate(50,50)")
+        .selectAll("rect")
+        .data(curdata)
+        .enter()
+        .append("rect")
+        .attr("x",function(d,i) {return x(i);})
+        .attr("y",function(d,i) {return y(d);})
+        .attr("width",function(d,i){return 450/16;})
+        .attr("height", function(d,i) {return 450-y(d);})
+        */
+
     }
 
     function transition(buttonid)
     {
-        if(buttonid == 1)
+        console.log("transition");
+        action(buttonid);
+        drawchart(buttonid);
+        d3.selectAll("button")
+        .style("background-color",function(d,i)
         {
-
+            console.log(i,buttonid);
+            if(buttonid==i+1){return "black";}
+            return "blanchedalmond";
         }
-        if(buttonid == 2)
-        {
+        )
+        .style("color",function(d,i){if(buttonid==i+1){return "yellowgreen";}return "black";})
 
-        }
-        if(buttonid ==3)
-        {
-
-        }
-        if(buttonid ==4)
-        {
-
-        }
-        if(buttonid ==5)
-        {
-
-        }
     } 
-
-    function action1()
+       
+    function textsetter(i)
     {
-
-
+        var init = true;
+  
+        document.getElementById("info").innerText="";
+        str = text[i].split("");
+        var el = document.getElementById("info");
+        (function animate() {
+        str.length > 0 ? el.innerHTML += str.shift() : clearTimeout(running); 
+        var running = setTimeout(animate, 90);
+        init = false;
+        })(); 
 
     }
-
-    function action2()
+    function action(i)
     {
+        console.log("action called on ");
+        console.log(i);
+        textsetter(i-1);
+        drawchart(i);
+    }   
 
-    }
-
-    function action3()
-    {
-
-    }
-
-    function action4()
-    {
-
-    }
-    function action5()
-    {
-
-    }
 
 </script>
 
