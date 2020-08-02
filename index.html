@@ -38,6 +38,12 @@ div {
   opacity: 0.9;
 }
 
+svg:title
+{
+    background-color: black;
+    color: blanchedalmond;
+}
+
 </style>
 <body onload='init()'; background="logo1.jpeg"; >
 <h1> EPL Champions Comparison</h1>
@@ -151,7 +157,7 @@ div {
 
         var bars = svgelement.selectAll("rect")
         .append("g")
-        .attr("transform","translate(50,50)")
+        .attr("transform","translate(50,100)")
         .data(curdata)
         .enter()
         .append("rect")
@@ -165,7 +171,15 @@ div {
         .duration(5000)
         ;
 
-        svgelement.selectAll("rect").append("svg:title").text(function(d,i) { return "some tooltip"; })
+        svgelement.selectAll("rect").append("svg:title")
+        .text(function(d,i) { return club[i]+",\n"+curdata[i].toString();})
+        ;
+         
+
+
+// Add annotation to the chart
+
+
 
         var yaxisnodes = svgelement.
         append("g")
