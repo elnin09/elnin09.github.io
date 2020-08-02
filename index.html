@@ -141,6 +141,8 @@ div {
             default:
 
             }
+
+        y = d3.scaleLinear().domain([0,120]).range([550,0]);
         d3.select("#rightcontent").html(null); 
         var x = d3.scaleLinear().domain([2004,2020]).range([0,750]);
         var svgelement = d3.select("#rightcontent").append("svg").attr("width","800").attr("height","700");
@@ -160,7 +162,10 @@ div {
         .attr("height", function(d,i) {return 550-y(d);})
         .attr("fill",function(d,i){return rectcolor[club[i]];})
         .attr("style","stroke: white")
-        .duration(5000);
+        .duration(5000)
+        ;
+
+        svgelement.selectAll("rect").append("svg:title").text(function(d,i) { return "some tooltip"; })
 
         var yaxisnodes = svgelement.
         append("g")
